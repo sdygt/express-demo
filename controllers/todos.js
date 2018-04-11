@@ -1,46 +1,79 @@
 const express = require('express');
 const router = express.Router();
 const todos = require('../models/todos');
-let todolist = {1: 'todo1'};
 
 router.get('/', function (req, res) {
-  res.status(200).json(todolist);
+  todos.getAll()
+    .then(data => {
+      res.status(200).json(data).end();
+    })
+    .catch(err => {
+      res.status(500).end(err.message);
+    });
 });
 
 router.get('/:id', (req, res) => {
-  if (!todolist[req.params.id]) {
-    res.status(404).end();
-  } else {
-    res.status(200).end(todolist[req.params.id]);
-  }
+  todos.getOne(req.params.id)
+    .then(data => {
+      if (data) {
+        res.status(200).json(data).end();
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch(err => {
+      console.warn(err);
+      res.status(500).end(err.message);
+    });
 });
 
 router.post('/', (req, res) => {
   if (!req.body.text) {
-    res.status(400).end('Header `text` not set');
+    res.status(400).end('Field `text` not set');
+    return;
+    /* Remember to end the handler itself,
+    otherwise Node will continue execute code below,
+    although `res` has ended.
+     */
   }
   todos.add(req.body.text)
     .then((id) => {
       res.status(201).location(`${req.baseUrl}/${id.toHexString()}`).end();
     })
-    .catch((err) => {
+    .catch(err => {
       console.warn(err);
       res.status(500).end(err.message);
     });
 });
 
 router.put('/:id', (req, res) => {
-  if (!todolist[req.params.id]) {
-    res.status(404).end();
-  } else {
-    todolist[req.params.id] = req.body.content;
-    res.status(200).end();
+  if (!req.body.text) {
+    res.status(400).end('Field `text` not set');
+    return;
   }
+  todos.update(req.params.id, req.body.text)
+    .then(r => {
+      if (r.modifiedCount === 1) {
+        res.status(200).end();
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch(err => {
+      console.warn(err);
+      res.status(500).end(err.message);
+    });
 });
 
 router.delete('/:id', (req, res) => {
-  delete todolist[req.params.id];
-  res.status(204).end();
+  todos.remove(req.params.id)
+    .then(r => {
+      res.status(204).end();
+    })
+    .catch(err => {
+      console.warn(err);
+      res.status(500).end(err.message);
+    });
 });
 
 module.exports = router;

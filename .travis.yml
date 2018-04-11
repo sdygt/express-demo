@@ -2,8 +2,16 @@ language: node_js
 node_js:
   - "node"
   - "8"
-  - "7"
   - "6"
-  - "5"
+
+services:
+  - mongodb
+
+env:
+  - NODE_ENV=test
+
+before_script:
+  - sleep 5
+  - mongo mydb_test --eval 'db.createUser({user:"root",pwd:"toortoor",roles:["readWrite"]});'
 
 cache: yarn
