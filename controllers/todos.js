@@ -22,7 +22,7 @@ router.get('/:id', (req, res) => {
       }
     })
     .catch(err => {
-      console.warn(err);
+      console.warn(err.stack);
       res.status(500).end(err.message);
     });
 });
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
       res.status(201).location(`${req.baseUrl}/${id.toHexString()}`).end();
     })
     .catch(err => {
-      console.warn(err);
+      console.warn(err.stack);
       res.status(500).end(err.message);
     });
 });
@@ -60,7 +60,7 @@ router.put('/:id', (req, res) => {
       }
     })
     .catch(err => {
-      console.warn(err);
+      console.warn(err.stack);
       res.status(500).end(err.message);
     });
 });
@@ -71,7 +71,7 @@ router.delete('/:id', (req, res) => {
       res.status(204).end();
     })
     .catch(err => {
-      console.warn(err);
+      console.warn(err.stack);
       res.status(500).end(err.message);
     });
 });
