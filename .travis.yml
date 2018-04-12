@@ -8,10 +8,9 @@ services:
   - mongodb
 
 env:
-  - NODE_ENV=test
+  - NODE_ENV=travis
 
 before_script:
   - sleep 5
-  - mongo demo --eval 'db.createUser({user:"root",pwd:"toortoor",roles:["readWrite"]});'
 
 cache: yarn
