@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "NODE_ENV=dev node ./bin/www",
     "start": "NODE_ENV=production node ./bin/www",
-    "test": "NODE_ENV=test mocha",
-    "cover": "NODE_ENV=test nyc mocha"
+    "test": "mocha",
+    "cover": "nyc mocha"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

@@ -6,7 +6,7 @@ module.exports = {
 
   add: async (text) => {
     const client = await MongoClient.connect(config.get('MONGO_URI'));
-
+    console.warn(`###model  MONGO_URI=${config.get('MONGO_URI')}###`);
     const collection = client.db('demo').collection('todos');
     return new Promise((resolve, reject) => {
       collection.insertOne({'text': text})

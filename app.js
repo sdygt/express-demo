@@ -1,9 +1,13 @@
 let express = require('express');
 let path = require('path');
 
+process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
+
+let config = require('config');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+
 let sassMiddleware = require('node-sass-middleware');
 
 let app = express();
@@ -46,5 +50,5 @@ app.use(function (err, req, res) {
 });
 
 console.warn('Server started');
-
+console.warn(`###app  MONGO_URI=${config.get('MONGO_URI')}###\n###NODE_ENV=${process.env.NODE_ENV}###`);
 module.exports = app;
