@@ -12,6 +12,6 @@ env:
 
 before_script:
   - sleep 5
-  - mongo mydb_test --eval 'db.createUser({user:"root",pwd:"toortoor",roles:["readWrite"]});'
+  - mongo demo --eval 'db.createUser({user:"root",pwd:"toortoor",roles:["readWrite"]});'
 
 cache: yarn
