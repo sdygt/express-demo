@@ -1,0 +1,3 @@
+{
+  "MONGO_URI":"mongodb://root:toortoor@127.0.0.1:27017"
+}

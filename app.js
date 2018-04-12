@@ -1,13 +1,13 @@
 let express = require('express');
 let path = require('path');
 
+process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
+
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-let sassMiddleware = require('node-sass-middleware');
 
-let index = require('./routes/index');
-let todos = require('./routes/todos');
+let sassMiddleware = require('node-sass-middleware');
 
 let app = express();
 
@@ -28,9 +28,7 @@ app.use(sassMiddleware({
   sourceMap: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', index);
-app.use('/todos', todos);
+app.use(require('./controllers'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -40,14 +38,15 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'production' ? {} : err;
 
   // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
 
+console.warn('Server started');
 module.exports = app;
