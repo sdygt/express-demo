@@ -10,7 +10,4 @@ services:
 env:
   - NODE_ENV=travis
 
-before_script:
-  - sleep 5
-
 cache: yarn
